@@ -1,0 +1,100 @@
+/* ───────────── Base layer ───────────── */
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  button,
+  a,
+  input,
+  textarea,
+  select,
+  [role="switch"],
+  [role="tab"] {
+    transition-property:
+      color, background-color, border-color, box-shadow, opacity;
+    transition-duration: 130ms;
+    transition-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  body {
+    min-width: 320px;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 40%, transparent);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html.light {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    accent-color: var(--primary);
+  }
+  select {
+    color-scheme: light dark;
+  }
+  .dark select {
+    color-scheme: dark;
+  }
+  option {
+    background-color: var(--card);
+    color: var(--card-foreground);
+    padding: 4px 8px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  kbd {
+    @apply rounded border border-current/25 px-1 py-px font-mono text-[10px] leading-none opacity-70;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .metric-card {
+    min-height: 84px;
+    padding: 12px;
+  }
+  .metric-card strong {
+    font-size: 22px;
+  }
+  .health-row {
+    padding: 10px;
+  }
+}

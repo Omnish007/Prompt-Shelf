@@ -1,0 +1,728 @@
+/* ───────────── Component layer ───────────── */
+@layer components {
+  .nav-item {
+    @apply h-9 rounded-lg;
+  }
+
+  /* Deliberate depth hierarchy: content canvas, elevated panels, and quiet side rail. */
+  body {
+    background-image: radial-gradient(
+      ellipse at 12% 0%,
+      color-mix(in oklab, var(--primary) 5%, transparent),
+      transparent 36rem
+    );
+  }
+  .dark body {
+    background-image: radial-gradient(
+      ellipse at 12% 0%,
+      color-mix(in oklab, var(--primary) 8%, transparent),
+      transparent 38rem
+    );
+  }
+  aside.bg-sidebar {
+    border-color: var(--border);
+    box-shadow: 1px 0 0 color-mix(in oklab, var(--border) 30%, transparent);
+  }
+  .field {
+    min-height: 2.35rem;
+    border-radius: 0.7rem;
+  }
+  .btn-primary {
+    border: 1px solid color-mix(in oklab, var(--primary) 78%, black);
+  }
+  .prompt-row {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 164px;
+  }
+  .prompt-row:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .nav-item[data-active="true"] {
+    @apply bg-accent font-semibold text-accent-foreground;
+  }
+  .nav-item[data-active="true"]::before {
+    content: "";
+    @apply absolute -left-3 top-2 bottom-2 w-0.5 rounded-r bg-primary;
+  }
+  .nav-item[data-active="true"] svg {
+    @apply text-primary;
+  }
+  .chip[data-active="true"] {
+    @apply border-primary/40 bg-primary/10 text-primary;
+  }
+
+  /* Light-mode panel refinements */
+  :root .panel {
+    border-color: color-mix(in oklab, var(--border) 86%, white);
+    box-shadow:
+      0 1px 2px oklch(0.3 0.02 270 / 0.025),
+      0 6px 24px -22px oklch(0.25 0.04 270 / 0.22);
+  }
+  .dark .panel {
+    border-color: var(--border);
+    box-shadow:
+      0 1px 2px oklch(0 0 0 / 0.15),
+      0 4px 16px -12px oklch(0 0 0 / 0.4);
+  }
+
+  :root .field {
+    background-color: color-mix(in oklab, white 85%, var(--background));
+  }
+  .dark .field {
+    background-color: var(--surface);
+  }
+  .field:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 12%, transparent);
+  }
+
+  /* Sidebar gradient */
+  :root aside.bg-sidebar {
+    background: linear-gradient(180deg, oklch(0.99 0.003 265), var(--sidebar));
+  }
+  .dark aside.bg-sidebar {
+    background: linear-gradient(180deg, oklch(0.18 0.015 270), var(--sidebar));
+  }
+
+  .btn-primary {
+    box-shadow: var(--shadow-glow);
+  }
+  .btn-primary:hover {
+    box-shadow: 0 5px 14px -6px
+      color-mix(in oklab, var(--primary) 52%, transparent);
+  }
+  .nav-item:focus-visible,
+  .btn-ghost:focus-visible,
+  .btn-outline:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* Theme toggle button */
+  .theme-toggle {
+    @apply relative flex h-7 w-[52px] cursor-pointer items-center rounded-full border border-border/50 bg-secondary/60 p-0.5;
+    transition:
+      border-color 130ms ease,
+      background-color 130ms ease;
+  }
+  .theme-toggle:hover {
+    @apply border-muted-foreground/40;
+  }
+  .theme-toggle .toggle-thumb {
+    @apply flex size-5 items-center justify-center rounded-full bg-card shadow-sm;
+    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .dark .theme-toggle .toggle-thumb {
+    transform: translateX(24px);
+  }
+
+  /* Metric cards */
+  .metric-card {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    align-items: center;
+    gap: 2px 11px;
+    min-height: 100px;
+    padding: 16px 18px;
+    border: 1px solid color-mix(in oklab, var(--border) 82%, white);
+    border-radius: 16px;
+    background: linear-gradient(
+      140deg,
+      var(--card) 0%,
+      color-mix(in oklab, var(--accent) 24%, var(--card)) 100%
+    );
+    box-shadow: 0 4px 16px -16px oklch(0.25 0.03 270 / 0.28);
+    transition:
+      transform 200ms ease,
+      box-shadow 200ms ease;
+  }
+  .metric-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -12px oklch(0.25 0.03 270 / 0.35);
+  }
+  .dark .metric-card {
+    border-color: var(--border);
+    background: linear-gradient(
+      140deg,
+      var(--card) 0%,
+      color-mix(in oklab, var(--accent) 16%, var(--card)) 100%
+    );
+    box-shadow: 0 4px 16px -16px oklch(0 0 0 / 0.5);
+  }
+  .metric-icon {
+    grid-row: span 3;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    background: var(--accent);
+    color: var(--primary);
+  }
+  .metric-label {
+    color: var(--muted-foreground);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .metric-card strong {
+    font-size: 26px;
+    letter-spacing: -0.045em;
+    line-height: 1.1;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+  }
+  .metric-foot {
+    color: var(--muted-foreground);
+    font-size: 11px;
+  }
+
+  /* Health rows */
+  .health-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card);
+    text-align: left;
+    transition:
+      border-color 140ms ease,
+      transform 140ms ease,
+      box-shadow 140ms ease;
+  }
+  .health-row:hover {
+    border-color: color-mix(in oklab, var(--primary) 32%, var(--border));
+    box-shadow: 0 7px 18px -17px oklch(0.25 0.06 280 / 0.6);
+    transform: translateY(-1px);
+  }
+  .dark .health-row:hover {
+    box-shadow: 0 7px 18px -17px oklch(0 0 0 / 0.7);
+  }
+  .health-score {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border: 1px solid var(--success-border);
+    border-radius: 12px;
+    background: var(--success-bg);
+    color: var(--success-text);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .health-score[data-grade="needs-work"] {
+    border-color: var(--quality-needs-work-border);
+    background: var(--quality-needs-work-bg);
+    color: var(--quality-needs-work-text);
+  }
+
+  /* Quality scores */
+  .quality-score {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card);
+    font-variant-numeric: tabular-nums;
+  }
+  .quality-score strong {
+    font-size: 21px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+  .quality-score span {
+    color: var(--muted-foreground);
+    font-size: 10px;
+  }
+  .quality-score[data-grade="strong"] {
+    border-color: var(--success-border);
+    background: var(--success-bg);
+    color: var(--success-text);
+  }
+  .quality-score[data-grade="good"] {
+    border-color: var(--quality-good-border);
+    background: var(--quality-good-bg);
+    color: var(--quality-good-text);
+  }
+  .quality-score[data-grade="needs-work"] {
+    border-color: var(--quality-needs-work-border);
+    background: var(--quality-needs-work-bg);
+    color: var(--quality-needs-work-text);
+  }
+
+  /* Prompt coach */
+  .prompt-coach {
+    background: linear-gradient(
+      160deg,
+      var(--card),
+      color-mix(in oklab, var(--accent) 12%, var(--card))
+    );
+  }
+  .prompt-coach [data-passed="false"] {
+    background: color-mix(in oklab, var(--card) 75%, var(--background));
+  }
+  .prompt-coach [data-passed="true"] {
+    color: var(--success-text);
+  }
+
+  /* Warning & info banners */
+  .banner-warning {
+    border-color: var(--warning-border);
+    background: var(--warning-bg);
+    color: var(--warning-text);
+  }
+  .banner-info {
+    border-color: var(--info-border);
+    background: var(--info-bg);
+    color: var(--info-text);
+  }
+
+  /* Prompt list item / card styling - spacious, distinct, and visually differentiated */
+  .prompt-row {
+    @apply relative cursor-pointer rounded-xl border border-border/70 bg-card/75 p-3.5 sm:p-4 text-left transition-[background-color,border-color,box-shadow,transform] duration-150;
+    box-shadow:
+      0 1px 3px oklch(0 0 0 / 0.03),
+      0 1px 2px oklch(0 0 0 / 0.02);
+  }
+  .prompt-row:hover {
+    @apply border-primary/40 bg-card shadow-md;
+    transform: translateY(-1.5px);
+  }
+  .dark .prompt-row {
+    background: color-mix(in oklab, var(--card) 90%, var(--background));
+    border-color: color-mix(in oklab, var(--border) 90%, transparent);
+    box-shadow: 0 1px 3px oklch(0 0 0 / 0.25);
+  }
+  .dark .prompt-row:hover {
+    border-color: color-mix(in oklab, var(--primary) 45%, var(--border));
+    background: var(--card);
+    box-shadow: 0 4px 16px -4px oklch(0 0 0 / 0.45);
+  }
+  .prompt-row[data-sel="true"] {
+    @apply border-primary bg-accent/60 shadow-md ring-2 ring-primary/25;
+  }
+  .dark .prompt-row[data-sel="true"] {
+    border-color: var(--primary);
+    background: color-mix(in oklab, var(--accent) 70%, var(--card));
+    box-shadow:
+      0 0 0 2px color-mix(in oklab, var(--primary) 30%, transparent),
+      0 4px 16px -4px oklch(0 0 0 / 0.5);
+  }
+  .prompt-row[data-cur="true"] {
+    @apply ring-2 ring-ring/60;
+  }
+
+  /* Utility for hiding scrollbar in horizontal pill lists */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Loading skeleton */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--muted) 25%,
+      var(--accent) 50%,
+      var(--muted) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: 8px;
+  }
+
+  /* Status indicator dot */
+  .status-dot {
+    @apply size-1.5 rounded-full;
+    transition: background-color 200ms ease;
+  }
+  .status-dot[data-status="idle"] {
+    @apply bg-success;
+  }
+  .status-dot[data-status="saving"] {
+    @apply animate-pulse bg-primary;
+  }
+  .status-dot[data-status="failed"] {
+    @apply bg-destructive;
+  }
+
+  /* Keyboard skip navigation: visible only once the user tabs into the page. */
+  .skip-link {
+    position: fixed;
+    z-index: 1000;
+    top: 0.75rem;
+    left: 0.75rem;
+    transform: translateY(-180%);
+    border: 1px solid var(--border);
+    border-radius: 0.65rem;
+    background: var(--card);
+    color: var(--foreground);
+    padding: 0.65rem 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-pop);
+  }
+  .skip-link:focus {
+    transform: translateY(0);
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  .dashboard-workspace {
+    scrollbar-gutter: stable;
+  }
+  .dashboard-hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid color-mix(in oklab, var(--primary) 18%, var(--border));
+    border-radius: 1.25rem;
+    background: linear-gradient(
+      115deg,
+      var(--card) 0%,
+      color-mix(in oklab, var(--accent) 26%, var(--card)) 100%
+    );
+  }
+  .dashboard-hero::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    width: 22rem;
+    height: 22rem;
+    right: -9rem;
+    top: -15rem;
+    border: 1px solid color-mix(in oklab, var(--primary) 12%, transparent);
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 2.5rem color-mix(in oklab, var(--primary) 2.5%, transparent),
+      0 0 0 5.5rem color-mix(in oklab, var(--primary) 2%, transparent);
+    pointer-events: none;
+  }
+  .dark .dashboard-hero {
+    background: linear-gradient(
+      115deg,
+      var(--card) 0%,
+      color-mix(in oklab, var(--accent) 34%, var(--card)) 100%
+    );
+  }
+  .dashboard-hero-content {
+    padding: clamp(1.1rem, 3vw, 2rem);
+  }
+  .dashboard-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    font-size: 0.68rem;
+    font-weight: 750;
+    letter-spacing: 0.13em;
+  }
+  .dashboard-title {
+    max-width: 46rem;
+    font-size: clamp(1.65rem, 3vw, 2.4rem);
+    line-height: 1.12;
+    font-weight: 680;
+    letter-spacing: -0.055em;
+  }
+  .dashboard-title span {
+    color: var(--primary);
+  }
+  .dashboard-search-launch {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 3.1rem;
+    margin-top: 1.6rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 0.8rem;
+    background: color-mix(in oklab, var(--background) 80%, transparent);
+    color: var(--muted-foreground);
+    text-align: left;
+    font-size: 0.875rem;
+    transition:
+      border-color 130ms ease,
+      background-color 130ms ease,
+      box-shadow 130ms ease;
+  }
+  .dashboard-search-launch > span {
+    flex: 1;
+    min-width: 0;
+  }
+  .dashboard-search-launch:hover {
+    border-color: color-mix(in oklab, var(--primary) 45%, var(--border));
+    background: var(--card);
+    color: var(--foreground);
+  }
+  .dashboard-search-launch:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  .dashboard-search-launch kbd {
+    border: 1px solid var(--border);
+    border-radius: 0.4rem;
+    background: var(--card);
+    padding: 0.2rem 0.4rem;
+    color: var(--muted-foreground);
+    white-space: nowrap;
+  }
+
+  .dashboard-overview {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(13rem, 1.35fr);
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--card);
+    padding: 0.85rem 1rem;
+  }
+  .dashboard-overview-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+  .dashboard-overview-icon,
+  .dashboard-panel-icon,
+  .dashboard-health-icon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid color-mix(in oklab, var(--primary) 14%, var(--border));
+    border-radius: 0.65rem;
+    background: color-mix(in oklab, var(--accent) 65%, var(--card));
+    color: var(--primary);
+  }
+  .dashboard-overview-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  .dashboard-overview-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .dashboard-overview-copy strong {
+    font-size: 1.2rem;
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .dashboard-overview-copy span {
+    margin-top: 0.2rem;
+    color: var(--muted-foreground);
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+  .dashboard-overview-note {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    border-left: 1px solid var(--border);
+    padding-left: 1rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+  }
+
+  .dashboard-panel {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--card);
+  }
+  .dashboard-panel-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 1rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .dashboard-panel-icon {
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+  .dashboard-panel-count {
+    margin-left: auto;
+    min-width: 1.6rem;
+    border-radius: 0.45rem;
+    background: var(--muted);
+    padding: 0.2rem 0.4rem;
+    color: var(--muted-foreground);
+    text-align: center;
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .dashboard-items {
+    padding: 0.35rem;
+  }
+  .dashboard-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-radius: 0.65rem;
+  }
+  .dashboard-item:hover {
+    background: var(--accent);
+  }
+  .dashboard-item-open {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex: 1;
+    min-width: 0;
+    padding: 0.6rem 0.5rem;
+    text-align: left;
+    border-radius: 0.6rem;
+  }
+  .dashboard-item-open:focus-visible,
+  .dashboard-use:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+  }
+  .dashboard-item-mark {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 0.55rem;
+    background: var(--muted);
+    color: var(--muted-foreground);
+  }
+  .dashboard-item-title {
+    display: block;
+    overflow: hidden;
+    color: var(--foreground);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dashboard-item-description {
+    display: block;
+    overflow: hidden;
+    margin-top: 0.2rem;
+    color: var(--muted-foreground);
+    font-size: 0.69rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dashboard-item-arrow {
+    color: var(--muted-foreground);
+    opacity: 0;
+    transition:
+      opacity 130ms ease,
+      transform 130ms ease;
+  }
+  .dashboard-item:hover .dashboard-item-arrow,
+  .dashboard-item-open:focus-visible .dashboard-item-arrow {
+    opacity: 1;
+    transform: translate(1px, -1px);
+  }
+  .dashboard-use {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    margin-right: 0.25rem;
+    border-radius: 0.55rem;
+    color: var(--muted-foreground);
+    opacity: 0.75;
+  }
+  .dashboard-use:hover {
+    background: var(--background);
+    color: var(--primary);
+    opacity: 1;
+  }
+  .dashboard-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+    padding: 0.95rem 0.75rem 1.1rem;
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+  .dashboard-health {
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    background: var(--card);
+    padding: 1.1rem;
+  }
+  .dashboard-health-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+  .dashboard-health-caption {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.35rem 0.55rem;
+    color: var(--muted-foreground);
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .library-recovery-card {
+    box-shadow: 0 18px 52px -36px oklch(0.2 0.02 270 / 0.38);
+  }
+  .mobile-save-indicator {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .dashboard-overview {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7rem 0.4rem;
+      padding: 0.75rem;
+    }
+    .dashboard-overview-icon {
+      display: none;
+    }
+    .dashboard-overview-copy strong {
+      font-size: 1.1rem;
+    }
+    .dashboard-overview-copy span {
+      font-size: 0.65rem;
+      white-space: normal;
+    }
+    .dashboard-overview-note {
+      grid-column: 1 / -1;
+      justify-content: flex-start;
+      border-top: 1px solid var(--border);
+      border-left: 0;
+      padding: 0.65rem 0 0;
+    }
+  }
+  @media (max-width: 480px) {
+    .dashboard-search-launch {
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      font-size: 0.78rem;
+    }
+    .dashboard-search-launch kbd {
+      display: none;
+    }
+    .dashboard-item-arrow {
+      opacity: 0.6;
+    }
+  }
+}
